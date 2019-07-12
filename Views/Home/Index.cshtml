@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNetCore.Authentication;
+@using  ravi.learn.web.cookieauth.Models.Configuration;
+@using Microsoft.Extensions.Options;
+
+@inject IOptionsMonitor<MyOptions>  optionsAccessor;
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<h2>App settings</h2>
+<ol>
+    @{ 
+        var options = optionsAccessor.CurrentValue;
+        <li>@nameof(@options.Option1)-@options.Option1</li>
+        <li>@nameof(@options.Option2)-@options.Option2</li>
+    }
+    
+</ol>
+
+<h2>Claims</h2>
+<dl>
+    @foreach (var claim in User.Claims)
+    {
+        <dt>@claim.Type</dt>
+        <dd>@claim.Value</dd>
+    }
+</dl>
+
+<h2>Properties</h2>
+<dl>
+    @foreach (var prop in (await Context.AuthenticateAsync()).Properties.Items)
+    {
+        <dt>@prop.Key</dt>
+        <dd>@prop.Value</dd>
+    }
+</dl>
+<a asp-controller="Home" asp-action="Revoke" style="margin-right: 10px">Revoke</a>
+<a asp-controller="Home" asp-action="Logout">Logout</a>
